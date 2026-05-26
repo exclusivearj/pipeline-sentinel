@@ -12,6 +12,9 @@ x-airflow-env: &airflow-env
   AIRFLOW_CONN_SENTINEL_METRICS_DB: "duckdb:///opt/airflow/data/sentinel_reports.duckdb"
   SENTINEL_DUCKDB_PATH: "/usr/local/airflow/data/sentinel_reports.duckdb"
   SENTINEL_DATA_DIR: "/usr/local/airflow/data"
+  AIRFLOW__CORE__AUTH_MANAGER: airflow.api_fastapi.auth.managers.simple.simple_auth_manager.SimpleAuthManager
+  AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_USERS: "admin:ADMIN"
+  AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "True"
 
 services:
   postgres:
@@ -39,9 +42,7 @@ services:
     entrypoint: /bin/bash
     command:
       - -c
-      - |
-        airflow db migrate &&
-        airflow users create -u admin -p admin -f Admin -l Admin -r Admin -e admin@example.com || true
+      - airflow db migrate
     volumes:
       - ./dags:/usr/local/airflow/dags
       - ./plugins:/usr/local/airflow/plugins
@@ -58,7 +59,7 @@ services:
         condition: service_completed_successfully
     environment:
       <<: *airflow-env
-    command: api-server
+    command: airflow api-server
     ports:
       - "8080:8080"
     volumes:
@@ -81,7 +82,7 @@ services:
         condition: service_completed_successfully
     environment:
       <<: *airflow-env
-    command: scheduler
+    command: airflow scheduler
     volumes:
       - ./dags:/usr/local/airflow/dags
       - ./plugins:/usr/local/airflow/plugins
@@ -98,7 +99,23 @@ services:
         condition: service_completed_successfully
     environment:
       <<: *airflow-env
-    command: triggerer
+    command: airflow triggerer
+    volumes:
+      - ./dags:/usr/local/airflow/dags
+      - ./plugins:/usr/local/airflow/plugins
+      - ./include:/usr/local/airflow/include
+      - ./data:/usr/local/airflow/data
+
+  dag-processor:
+    build:
+      context: ..
+      dockerfile: airflow/Dockerfile
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    environment:
+      <<: *airflow-env
+    command: airflow dag-processor
     volumes:
       - ./dags:/usr/local/airflow/dags
       - ./plugins:/usr/local/airflow/plugins

@@ -42,7 +42,7 @@ This directory is a complete Astronomer Airflow project that *consumes* the `pip
 
 | Path | Purpose |
 |---|---|
-| `Dockerfile` | Astro Runtime 10.5.0 + sentinel library installed editable |
+| `Dockerfile` | Astro Runtime 3.1-5 (Airflow 3.1.x) + sentinel library installed editable |
 | `requirements.txt` | Airflow providers: slack, duckdb, pandas, pyarrow |
 | `docker-compose.yml` | Postgres + scheduler + webserver + triggerer + airflow-init |
 | `dags/ratings_etl_pipeline.py` | Showcase ETL DAG (3am) |
