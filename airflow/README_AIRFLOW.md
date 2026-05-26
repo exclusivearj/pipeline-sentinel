@@ -59,7 +59,10 @@ This directory is a complete Astronomer Airflow project that *consumes* the `pip
 ## Local quickstart
 
 ```bash
-# Drop a MovieLens-style ratings.csv at airflow/data/ratings_sample.csv
+# Option A: generate a synthetic 12k-row MovieLens-shape CSV (needs `make install` first)
+make seed-data
+
+# Option B: drop your own MovieLens-style ratings.csv at airflow/data/ratings_sample.csv
 # Columns expected: userId, movieId, rating, timestamp (epoch seconds)
 
 cd airflow

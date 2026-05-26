@@ -1,4 +1,4 @@
-.PHONY: install test lint format build example clean airflow-up airflow-down trigger-etl trigger-regression trigger-digest airflow-test
+.PHONY: install test lint format build example clean airflow-up airflow-down trigger-etl trigger-regression trigger-digest airflow-test seed-data
 
 PY := python3
 PIP := pip3
@@ -30,6 +30,9 @@ clean:
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 
 # Airflow targets (docker compose lives in airflow/)
+seed-data:
+	$(VENV)/bin/$(PY) airflow/scripts/seed_ratings_data.py
+
 airflow-up:
 	cd airflow && docker compose up -d
 
