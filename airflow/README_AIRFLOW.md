@@ -84,20 +84,22 @@ docker compose down -v
 
 ## Multi-container Airflow 3 configuration
 
-This stack splits the api-server, scheduler, triggerer, and dag-processor into separate containers. Airflow 3 changed how task subprocesses talk to the rest of the system, and two env vars in `x-airflow-env` are load-bearing for that — without them, every task fails before logging a single line.
+This stack splits the api-server, scheduler, triggerer, and dag-processor into separate containers. Airflow 3 changed how task subprocesses and inter-component requests talk to the rest of the system, and three env vars in `x-airflow-env` are load-bearing for that — without them, tasks fail before logging a single line or log-fetch URLs come back unsigned.
 
 | Env var | Purpose |
 |---|---|
 | `AIRFLOW__CORE__EXECUTION_API_SERVER_URL` | URL the Task SDK uses to call the Task Execution API from inside task subprocesses. Must point at the `webserver` service hostname, not `localhost`, because tasks run in the `scheduler` container. Default is `http://localhost:8080/execution/`, which is wrong for any non-single-container deploy. |
 | `AIRFLOW__API_AUTH__JWT_SECRET` | Shared HMAC secret used to sign and verify the JWT the Task SDK presents to the Execution API. If unset, each container auto-generates its own random value at startup, so tokens scheduler signs cannot be verified by webserver. Must be a fixed value shared by every airflow container. |
+| `AIRFLOW__API__SECRET_KEY` | Flask/Werkzeug secret used to sign log-fetch URLs and other internal handoffs between airflow components (in Airflow 2 this lived under `[webserver] secret_key` — the warning text still says "webserver section" for historical reasons). Same rule: must be a fixed shared value, not auto-generated per container. |
 
 ### Diagnostic signatures
 
-If you see these symptoms, the cause is one of the two env vars above:
+If you see these symptoms, the cause is one of the three env vars above:
 
 | Symptom | Likely cause |
 |---|---|
 | All DAGs fail at their first task; task log files exist but are 0 bytes; scheduler logs show `httpx.ConnectError: [Errno 111] Connection refused` with a traceback through `airflow/sdk/api/client.py` `task_instances.start`. | `EXECUTION_API_SERVER_URL` missing or pointing at `localhost`. |
 | Tasks fail with empty logs; scheduler logs show `airflow.sdk.api.client.ServerResponseError: Invalid auth token: Signature verification failed`. | `JWT_SECRET` not set (each container generated a different secret). |
+| Logs show `Please make sure that all your Airflow components ... have the same 'secret_key' configured`; UI cannot fetch task logs or cross-component requests fail. | `API__SECRET_KEY` not set (each container generated a different secret). |
 
-After changing either var, run `docker compose up -d` to recreate the containers, then clear the previously-failed task instances so they re-queue.
+After changing any of these vars, run `docker compose up -d` to recreate the containers, then clear the previously-failed task instances so they re-queue.

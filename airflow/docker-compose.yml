@@ -12,6 +12,7 @@ x-airflow-env: &airflow-env
   AIRFLOW_CONN_SENTINEL_METRICS_DB: "duckdb:///opt/airflow/data/sentinel_reports.duckdb"
   AIRFLOW__CORE__EXECUTION_API_SERVER_URL: "http://webserver:8080/execution/"
   AIRFLOW__API_AUTH__JWT_SECRET: "HfRwgLgfl9x5ZXwEuwpAvQDeC+Cf9Z3nduF7pMq3RgE="
+  AIRFLOW__API__SECRET_KEY: "7wVHqKVj6z8G2AFwi5dGlc39fejo2ThiFBqTvYNUq/0="
   SENTINEL_DUCKDB_PATH: "/usr/local/airflow/data/sentinel_reports.duckdb"
   SENTINEL_DATA_DIR: "/usr/local/airflow/data"
   AIRFLOW__CORE__AUTH_MANAGER: airflow.api_fastapi.auth.managers.simple.simple_auth_manager.SimpleAuthManager
