@@ -139,29 +139,45 @@ def test_overall_status_promotes_correctly():
     report = ObservabilityReport()
     report.check_results.append(
         CheckResult(
-            check_name="A", check_params={}, status=CheckStatus.PASS,
-            metric_value=1, threshold=1, message="ok",
+            check_name="A",
+            check_params={},
+            status=CheckStatus.PASS,
+            metric_value=1,
+            threshold=1,
+            message="ok",
         )
     )
     assert report.overall_status == CheckStatus.PASS
     report.check_results.append(
         CheckResult(
-            check_name="B", check_params={}, status=CheckStatus.WARN,
-            metric_value=1, threshold=1, message="warn",
+            check_name="B",
+            check_params={},
+            status=CheckStatus.WARN,
+            metric_value=1,
+            threshold=1,
+            message="warn",
         )
     )
     assert report.overall_status == CheckStatus.WARN
     report.check_results.append(
         CheckResult(
-            check_name="C", check_params={}, status=CheckStatus.ERROR,
-            metric_value=1, threshold=1, message="err",
+            check_name="C",
+            check_params={},
+            status=CheckStatus.ERROR,
+            metric_value=1,
+            threshold=1,
+            message="err",
         )
     )
     assert report.overall_status == CheckStatus.ERROR
     report.check_results.append(
         CheckResult(
-            check_name="D", check_params={}, status=CheckStatus.FAIL,
-            metric_value=1, threshold=1, message="fail",
+            check_name="D",
+            check_params={},
+            status=CheckStatus.FAIL,
+            metric_value=1,
+            threshold=1,
+            message="fail",
         )
     )
     assert report.overall_status == CheckStatus.FAIL

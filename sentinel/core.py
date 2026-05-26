@@ -116,10 +116,7 @@ def observe(
                     input_report.duration_ms = (time.monotonic() - start) * 1000
                     for sink in resolved_sinks:
                         sink._safe_write(input_report)
-                    if (
-                        on_failure == "raise"
-                        and input_report.overall_status == CheckStatus.FAIL
-                    ):
+                    if on_failure == "raise" and input_report.overall_status == CheckStatus.FAIL:
                         raise DataQualityError(
                             f"Input failed {len(input_report.failed_checks)} check(s) "
                             f"in {pipeline_name}/{table_name}",
@@ -137,10 +134,7 @@ def observe(
                     output_report.duration_ms = (time.monotonic() - start) * 1000
                     for sink in resolved_sinks:
                         sink._safe_write(output_report)
-                    if (
-                        on_failure == "raise"
-                        and output_report.overall_status == CheckStatus.FAIL
-                    ):
+                    if on_failure == "raise" and output_report.overall_status == CheckStatus.FAIL:
                         raise DataQualityError(
                             f"Output failed {len(output_report.failed_checks)} check(s) "
                             f"in {pipeline_name}/{table_name}",

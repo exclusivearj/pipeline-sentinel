@@ -8,7 +8,6 @@ import numpy as np
 import pandas as pd
 import pytest
 
-
 _EVENT_TYPES = ["page_view", "click", "search", "play", "pause"]
 
 

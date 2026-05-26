@@ -47,10 +47,7 @@ class RangeCheck(BaseCheck):
             out_of_range = int(
                 df.filter(
                     F.col(self.column).isNotNull()
-                    & (
-                        (F.col(self.column) < self.min_val)
-                        | (F.col(self.column) > self.max_val)
-                    )
+                    & ((F.col(self.column) < self.min_val) | (F.col(self.column) > self.max_val))
                 ).count()
             )
         else:

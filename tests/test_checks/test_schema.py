@@ -6,7 +6,6 @@ from sentinel.checks import SchemaCheck
 from sentinel.exceptions import CheckConfigurationError
 from sentinel.report import CheckStatus
 
-
 EXPECTED = {
     "user_id": "object",
     "rating": "float64",

@@ -6,8 +6,8 @@ from sentinel.checks import AnomalyCheck, RangeCheck, UniquenessCheck
 from sentinel.exceptions import CheckConfigurationError
 from sentinel.report import CheckStatus
 
-
 # ----- UniquenessCheck -----
+
 
 def test_uniqueness_pass_unique_column(sample_df_clean):
     df = sample_df_clean.copy()
@@ -39,6 +39,7 @@ def test_uniqueness_invalid_threshold():
 
 # ----- RangeCheck -----
 
+
 def test_range_pass_when_all_in_range(sample_df_clean):
     result = RangeCheck("rating", min_val=0.5, max_val=5.0).evaluate(sample_df_clean)
     assert result.status == CheckStatus.PASS
@@ -62,6 +63,7 @@ def test_range_invalid_bounds():
 
 
 # ----- AnomalyCheck -----
+
 
 def test_anomaly_skip_with_short_baseline(sample_df_clean):
     result = AnomalyCheck(baseline=[100, 110]).evaluate(sample_df_clean)

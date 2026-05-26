@@ -44,9 +44,7 @@ class NullRateCheck(BaseCheck):
         if self._is_spark(df):
             from pyspark.sql import functions as F  # type: ignore
 
-            null_count = int(
-                df.filter(F.col(self.column).isNull()).count()
-            )
+            null_count = int(df.filter(F.col(self.column).isNull()).count())
         else:
             null_count = int(pd.isna(df[self.column]).sum())
         null_rate = round(null_count / total, 4)

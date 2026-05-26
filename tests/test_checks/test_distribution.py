@@ -31,9 +31,9 @@ def test_fail_when_mean_drift(sample_df_clean):
 
 
 def test_metric_value_keys(sample_df_clean):
-    result = DistributionCheck(
-        "rating", baseline_mean=3.0, z_score_threshold=10.0
-    ).evaluate(sample_df_clean)
+    result = DistributionCheck("rating", baseline_mean=3.0, z_score_threshold=10.0).evaluate(
+        sample_df_clean
+    )
     assert "actual_mean" in result.metric_value
     assert "baseline_mean" in result.metric_value
     assert "z_score" in result.metric_value

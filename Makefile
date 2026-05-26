@@ -1,12 +1,12 @@
 .PHONY: install test lint format build example clean airflow-up airflow-down trigger-etl trigger-regression trigger-digest airflow-test
 
-PY := python
+PY := python3
+PIP := pip3
 VENV := .venv
 
 install:
 	$(PY) -m venv $(VENV)
-	$(VENV)/bin/pip install --upgrade pip
-	$(VENV)/bin/pip install -e ".[dev,spark]"
+	$(VENV)/bin/$(PIP) install -e ".[dev,spark,airflow]"
 
 test:
 	$(VENV)/bin/pytest tests/ -v --cov=sentinel --cov-report=term-missing
@@ -20,10 +20,10 @@ format:
 	$(VENV)/bin/black sentinel/ tests/
 
 build:
-	$(VENV)/bin/python -m build
+	$(VENV)/bin/$(PY) -m build
 
 example:
-	$(VENV)/bin/python examples/pandas_example.py
+	$(VENV)/bin/$(PY) examples/pandas_example.py
 
 clean:
 	rm -rf dist/ build/ *.egg-info .coverage .pytest_cache .mypy_cache

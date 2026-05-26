@@ -16,9 +16,7 @@ class RowCountCheck(BaseCheck):
         if min < 0:
             raise CheckConfigurationError(f"RowCountCheck: min must be >= 0, got {min}")
         if max < min:
-            raise CheckConfigurationError(
-                f"RowCountCheck: max ({max}) must be >= min ({min})"
-            )
+            raise CheckConfigurationError(f"RowCountCheck: max ({max}) must be >= min ({min})")
         self.min = min
         self.max = max
 

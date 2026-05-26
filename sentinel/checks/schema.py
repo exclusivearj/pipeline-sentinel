@@ -51,9 +51,7 @@ class SchemaCheck(BaseCheck):
         if missing:
             parts.append(f"missing columns: {missing}")
         if wrong_dtype:
-            details = ", ".join(
-                f"{c}: expected {exp}, got {act}" for c, exp, act in wrong_dtype
-            )
+            details = ", ".join(f"{c}: expected {exp}, got {act}" for c, exp, act in wrong_dtype)
             parts.append(f"dtype mismatches: {details}")
         message = "; ".join(parts)
 

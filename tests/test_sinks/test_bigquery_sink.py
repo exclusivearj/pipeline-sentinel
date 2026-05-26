@@ -28,7 +28,9 @@ def test_skips_gracefully_when_bigquery_not_installed(monkeypatch, caplog):
 
     sink = BigQuerySink(project="proj", dataset="ds")
     # Force the import to fail by clearing 'google.cloud' from imports
-    real_import = __builtins__["__import__"] if isinstance(__builtins__, dict) else __builtins__.__import__
+    real_import = (
+        __builtins__["__import__"] if isinstance(__builtins__, dict) else __builtins__.__import__
+    )
 
     def fake_import(name, *args, **kwargs):
         if name.startswith("google"):

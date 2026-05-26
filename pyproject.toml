@@ -31,6 +31,7 @@ dependencies = [
 [project.optional-dependencies]
 spark = ["pyspark>=3.3.0"]
 gcp = ["google-cloud-bigquery>=3.0.0"]
+airflow = ["duckdb>=0.9.0"]
 dev = [
     "pytest>=7.0",
     "pytest-cov",

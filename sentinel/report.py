@@ -86,7 +86,9 @@ class ObservabilityReport:
             metric = _short_repr(r.metric_value)
             threshold = _short_repr(r.threshold)
             col = r.column or "-"
-            rows.append(f"| {r.check_name} | {col} | {metric} | {threshold} | {r.status.value.upper()} |")
+            rows.append(
+                f"| {r.check_name} | {col} | {metric} | {threshold} | {r.status.value.upper()} |"
+            )
         return header + sep + "\n".join(rows)
 
 
